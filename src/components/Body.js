@@ -2,6 +2,7 @@ import RestaurantCard from "./RestaurantCard";
 import resList from "../utils/mockData";
 import { useState, useEffect} from "react";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
 
 const Body = () => {
     // local state variable - superpowerful variable
@@ -14,6 +15,9 @@ const Body = () => {
     const [searchText, setSearchText] = useState("");
     // whenever state variables update, react triggers a reconciliation cycle (re-renders the component)
 
+    // if no dependency array => useeffect is called on every render
+    // if the dependency array is empty => [] => useeffect called on initial render (just once)
+    // if dependency array [btnName] => called everytime btnName is updated
     useEffect(() => {
         console.log("useeffect called");
         fetchData();
@@ -68,7 +72,7 @@ const Body = () => {
             <div className="res-container">
                 {
                     filteredRestaurants.map((restaurant) => (
-                        <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+                        <Link to={"/restaurants/"+restaurant.info.id} key={restaurant.info.id}><RestaurantCard resData={restaurant} /></Link>
                     ))
                 }                                                                                                                                                                           
             </div>

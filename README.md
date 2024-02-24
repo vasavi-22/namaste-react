@@ -64,3 +64,8 @@ res-container
 
 # Virtual dom - is a representation of an actual dom
 Actual dom - react elements
+
+
+# 2 types routing in web apps
+- client side routing
+- server side routing
