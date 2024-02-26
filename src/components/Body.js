@@ -34,6 +34,8 @@ const Body = () => {
         setFilteredRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
     };
 
+    console.log(useState(),"consoling useState()");
+
     // conditional rendering
     // if(listOfRestaurants.length === 0){
     //     return <Shimmer />;
