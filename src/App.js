@@ -9,6 +9,9 @@ import Error from "./components/Error";
 import RestaurantMenu from "./components/RestaurantMenu";
 // import Grocery from "./components/Grocery";
 import UserContext from "./utils/userContext";
+import { Provider } from "react-redux";
+import appStore from "./store/appStore";
+import Cart from "./components/Cart";
 
 // chunking
 // code splitting
@@ -129,13 +132,15 @@ const AppLayout = () => {
     },[]);
 
     return(
-        <UserContext.Provider value = {{loggedInUser: userName, setUserName}}>
-            <div className="app">
-                <Header />
-                {/* <Body /> */}
-                <Outlet />
-            </div>
-        </UserContext.Provider>
+        <Provider store={appStore}>
+            <UserContext.Provider value = {{loggedInUser: userName, setUserName}}>
+                <div className="app">
+                    <Header />
+                    {/* <Body /> */}
+                    <Outlet />
+                </div>
+            </UserContext.Provider>
+        </Provider>
     );
 };
 
@@ -163,6 +168,10 @@ const appRouter = createBrowserRouter([
             {
                 path: "/restaurants/:resId",
                 element: <RestaurantMenu />,
+            },
+            {
+                path: "/cart",
+                element: <Cart />
             },
         ],
         errorElement: <Error />

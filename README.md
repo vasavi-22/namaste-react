@@ -69,3 +69,13 @@ Actual dom - react elements
 # 2 types routing in web apps
 - client side routing
 - server side routing
+
+# Redux Toolkit
+- Install @reduxjs/toolkit and react-redux
+- Build our store
+- Connect our store to our app
+- Slice ( cart slice ) to add items to the cart
+- Dispatch(action)
+- Selector
+ 
+
