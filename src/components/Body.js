@@ -70,6 +70,7 @@ const Body = () => {
                         // filter the restaurant cards and update the UI
                         // searchText
                         console.log(searchText);
+                        console.log(listOfRestaurants,"*****");
                         const filteredRestaurants = listOfRestaurants.filter((res)=> res.data.name.toLowerCase().includes(searchText.toLowerCase()));
                         setFilteredRestaurants(filteredRestaurants);
 

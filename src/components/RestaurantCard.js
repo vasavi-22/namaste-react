@@ -1,8 +1,10 @@
 import { IMG_CDN_URL } from "../utils/constants";
 
 const RestaurantCard = (props) => {
-    console.log(props);
+    // console.log(props);
     const {resData} = props;
+    console.log(resData.info,"ressssssssssss");
+
     const {cloudinaryImageId, name, avgRating, cuisines, costForTwo, sla} = resData?.info;
     return(
         <div className="m-4 p-4 w-[220px] rounded-lg bg-gray-100 hover:bg-gray-200" 
