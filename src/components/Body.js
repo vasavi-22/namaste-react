@@ -10,6 +10,7 @@ const Body = () => {
     // local state variable - superpowerful variable
     const [listOfRestaurants, setListOfRestaurants] = useState(resList);
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+    const [woym, setWoym] = useState([]);
 
     // normal js variable
     // let listOfRestaurants = [];
@@ -25,7 +26,7 @@ const Body = () => {
     // if the dependency array is empty => [] => useeffect called on initial render (just once)
     // if dependency array [btnName] => called everytime btnName is updated
     useEffect(() => {
-        console.log("useeffect called");
+        // console.log("useeffect called");
         fetchData();
     },[]);
 
@@ -34,13 +35,16 @@ const Body = () => {
             "https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.7399968&lng=83.32718&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
         );
         const json = await data.json();
-        console.log(json.data.cards[4].card.card.gridElements.infoWithStyle.restaurants);
+        console.log(json.data);
+        // console.log(json.data.cards[4].card.card.gridElements.infoWithStyle.restaurants);
         //optional chaining
+        setWoym(json?.data?.cards[0]?.card?.card?.imageGridCards?.info);
+        console.log(woym);
         setListOfRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
         setFilteredRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
     };
 
-    console.log(useState(),"consoling useState()");
+    // console.log(useState(),"consoling useState()");
 
     // conditional rendering
     // if(listOfRestaurants.length === 0){
@@ -51,10 +55,22 @@ const Body = () => {
 
     if(onlineStatus === false) return <h1>Looks like you're offline!! Please check your internet connection;</h1>
 
-    console.log("body rendered");
+    // console.log("body rendered");
+    console.log(filteredRestaurants);
 
     return listOfRestaurants.length === 0 ? ( <Shimmer /> ) :(
-        <div className="body">
+        <div 
+        // className="body"
+        className="m-10 px-20"
+        >
+            <div>
+                <h1 className="font-bold text-2xl px-10 py-6">What's on your mind?</h1>
+                <div className="flex flex-wrap">
+                    {woym.slice(0,7).map((i,index) => (
+                        <img key={i.id} src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_288,h_360/${i?.imageId}`} alt="image" width="180px" height="180px" />
+                    ))}
+                </div>
+            </div>
             <div className="filter flex">
                 <div className="search m-4 p-4">
                     <input 
@@ -69,8 +85,8 @@ const Body = () => {
                     onClick={() => {
                         // filter the restaurant cards and update the UI
                         // searchText
-                        console.log(searchText);
-                        console.log(listOfRestaurants,"*****");
+                        // console.log(searchText);
+                        // console.log(listOfRestaurants,"*****");
                         const filteredRestaurants = listOfRestaurants.filter((res)=> res.data.name.toLowerCase().includes(searchText.toLowerCase()));
                         setFilteredRestaurants(filteredRestaurants);
 

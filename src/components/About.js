@@ -26,7 +26,7 @@ class About extends Component{
                             {({loggedInUser}) => <h1 className="text-lg font-bold">{loggedInUser}</h1> }
                         </UserContext.Consumer>
                     </div>
-                    <h2>this is namaste react web series</h2>
+                    <h2>this is namaste react web series.....</h2>
                     <User name={"Vasavi Kasireddi"}/>
                     {/* <UserClass name={"first"} location = {"Vizag (class)"}/> */}
                     {/* <UserClass name={"second"} location = {"Vizag (class)"}/> */}

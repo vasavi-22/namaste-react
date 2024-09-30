@@ -30,7 +30,7 @@ const ItemList = ({items, dummy}) => {
                             <button className="p-2 mx-10 rounded-lg bg-black text-white shadow-lg"
                             onClick={() => handleAddItem(item)}> Add + </button>
                         </div>
-                        <img src={IMG_CDN_URL + item.card.info.imageId} />
+                        <img src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_300,h_300,c_fit/${item.card.info.imageId}`} />
                     </div>
                 </div>
             ))}

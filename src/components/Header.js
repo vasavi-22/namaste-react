@@ -21,17 +21,20 @@ const Header = () => {
 
     return(
         <div className="flex justify-between bg-pink-100 shadow-lg sm:bg-yellow-50 lg:bg-green-50">
-            <div className="logo-container">
+            <div 
+            // className="logo-container"
+            className="px-28 m-4"
+            >
                 <img className="w-14" src={LOGO_URL} />
             </div>
             <div className="nav-items">
-                <ul className="flex p-4 m-4">
-                    <li className="px-4">Online Status : {onlineStatus ? "on" : "off"}</li>
-                    <li className="px-4"><Link to="/">Home</Link></li>
+                <ul className="flex gap-3 p-4 m-4 px-20">
+                    <li className="px-4 text-lg font-semibold">Online Status : {onlineStatus ? "on" : "off"}</li>
+                    <li className="px-4 text-lg font-semibold"><Link to="/">Home</Link></li>
                     {/* <li><a href="/about">About Us</a></li> not a good way */}
-                    <li className="px-4"><Link to="/about">About Us</Link></li>
-                    <li className="px-4"><Link to="/contact">Contact Us</Link></li>
-                    <li className="px-4"><Link to="/grocery">Grocery</Link></li>
+                    <li className="px-4 text-lg font-semibold"><Link to="/about">About Us</Link></li>
+                    <li className="px-4 text-lg font-semibold"><Link to="/contact">Contact Us</Link></li>
+                    <li className="px-4 text-lg font-semibold"><Link to="/grocery">Grocery</Link></li>
                     <li className="px-4 font-bold text-xl"><Link to="/cart">Cart - ({cartItems.length})</Link></li>
                     <button className="login-btn"
                     onClick={() =>{
