@@ -61,13 +61,13 @@ const Body = () => {
     return listOfRestaurants.length === 0 ? ( <Shimmer /> ) :(
         <div 
         // className="body"
-        className="m-10 px-20"
+        className="m-10 px-36"
         >
             <div>
                 <h1 className="font-bold text-2xl px-10 py-6">What's on your mind?</h1>
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap gap-2">
                     {woym.slice(0,7).map((i,index) => (
-                        <img key={i.id} src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_288,h_360/${i?.imageId}`} alt="image" width="180px" height="180px" />
+                        <img key={i.id} src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_288,h_360/${i?.imageId}`} alt="image" width="150px" height="150px" />
                     ))}
                 </div>
             </div>
@@ -116,7 +116,7 @@ const Body = () => {
             </div>
             <div 
             // className="res-container"
-            className="flex flex-wrap"
+            className="flex flex-wrap gap-0"
             >
                 {
                     filteredRestaurants.map((restaurant) => (
