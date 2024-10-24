@@ -1,4 +1,5 @@
 import { IMG_CDN_URL, IMG_URL } from "../utils/constants";
+import img from "../../images/rating-circled-64.png";
 
 const RestaurantCard = (props) => {
   // console.log(props);
@@ -29,7 +30,7 @@ const RestaurantCard = (props) => {
         >
           {name.length > 20 ? `${name.substring(0,20)}...` : name}
         </h3>
-        <h4 className="font-semibold">{avgRating} . {sla.slaString}</h4>
+        <span><img src={img} height="30px" width="25px" style={{display:"inline-block"}}/><span className="font-semibold">{avgRating} . {sla.slaString}</span></span>
         <h4 className="text-gray-500">{cuisines.join(", ").length > 20 ? `${cuisines.join(", ").slice(0,20)}...` : cuisines.join(", ")}</h4>
         <h4 className="text-gray-500">{areaName}</h4>
       </div>
