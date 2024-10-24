@@ -1,16 +1,21 @@
 import RestaurantCard, {withPromotedLabel} from "./RestaurantCard";
 import resList from "../utils/mockData";
-import { useState, useEffect, useContext} from "react";
+import { useState, useEffect, useContext, useRef} from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import UserContext from "../utils/userContext";
+import WhatsOnYourMind from "./WhatsOnYourMind";
 
 const Body = () => {
     // local state variable - superpowerful variable
     const [listOfRestaurants, setListOfRestaurants] = useState(resList);
     const [filteredRestaurants, setFilteredRestaurants] = useState([]);
     const [woym, setWoym] = useState([]);
+    const [topRestaurants, setTopRestaurants] = useState([]);
+    
+    const [page, setPage] = useState(1); // to track current page
+    const [hasMore, setHasMore] = useState(true); // to check if more data is available
 
     // normal js variable
     // let listOfRestaurants = [];
@@ -27,12 +32,14 @@ const Body = () => {
     // if dependency array [btnName] => called everytime btnName is updated
     useEffect(() => {
         // console.log("useeffect called");
-        fetchData();
+        setTimeout(() => {
+            fetchData(page);
+        },5000);
     },[]);
 
-    const fetchData = async () => {
+    const fetchData = async (page) => {
         const data = await fetch(
-            "https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.7399968&lng=83.32718&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+            `https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.7399968&lng=83.32718&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING&page=${page}`
         );
         const json = await data.json();
         console.log(json.data);
@@ -40,9 +47,31 @@ const Body = () => {
         //optional chaining
         setWoym(json?.data?.cards[0]?.card?.card?.imageGridCards?.info);
         console.log(woym);
-        setListOfRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-        setFilteredRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+        setTopRestaurants(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+
+        const newRestaurants = json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
+        setListOfRestaurants((prevRestaurants) => [...prevRestaurants, ...newRestaurants]);
+        setFilteredRestaurants((prevRestaurants) => [...prevRestaurants, ...newRestaurants]);
+        // setListOfRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+        // setFilteredRestaurants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+
+        if(newRestaurants.length === 0){
+            setHasMore(false);  // stop fetching if no more restaurants are available
+        }
     };
+
+    const observer = useRef();
+    const lastRestaurantRef = (node) => {
+        if(observer.current) observer.current.disconnect();
+
+        observer.current = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting && hasMore){
+                setPage((prevPage) => prevPage + 1);
+            }
+        });
+
+        if(node) observer.current.observe(node);
+    }
 
     // console.log(useState(),"consoling useState()");
 
@@ -63,12 +92,27 @@ const Body = () => {
         // className="body"
         className="m-10 px-36"
         >
-            <div>
+            {/* <div>
                 <h1 className="font-bold text-2xl px-10 py-6">What's on your mind?</h1>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2.5">
                     {woym.slice(0,7).map((i,index) => (
                         <img key={i.id} src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_288,h_360/${i?.imageId}`} alt="image" width="150px" height="150px" />
                     ))}
+                </div>
+            </div> */}
+            <WhatsOnYourMind woym={woym}/>
+            <div>
+                <h1 className="font-bold text-2xl px-10 py-6">Top restaurant chains in your location</h1>
+                <div className="flex flex-wrap gap-0">
+                    {
+                        topRestaurants.map((restaurant) => (
+                            <Link to={"/restaurants/"+restaurant.info.id} key={restaurant.info.id}>
+                            {
+                                restaurant?.info?.promoted ? <RestaurantCardPromoted resData={restaurant}/> : <RestaurantCard resData={restaurant}/>
+                            }
+                            </Link>
+                        ))
+                    }
                 </div>
             </div>
             <div className="filter flex">
@@ -114,6 +158,7 @@ const Body = () => {
                     {/* if i change the userName here, my user context data should change */}
                 </div>
             </div>
+            <h1 className="font-bold text-2xl px-10 py-6">Restaurants with online food delivery in your location</h1>
             <div 
             // className="res-container"
             className="flex flex-wrap gap-0"
@@ -128,7 +173,9 @@ const Body = () => {
                             }
                         </Link>
                     ))
-                }                                                                                                                                                                           
+                } 
+                {/* Attach observer to the last restaurant card  */}
+                <div ref={lastRestaurantRef}></div>                                                                                                                                                                    
             </div>
         </div>
     );
