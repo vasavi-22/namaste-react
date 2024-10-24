@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import appStore from "./store/appStore";
 import Cart from "./components/Cart";
 
+import { DarkModeProvider } from "./utils/DarkModeContext";
 // chunking
 // code splitting
 // dynamic bundling
@@ -133,6 +134,7 @@ const AppLayout = () => {
 
     return(
         <Provider store={appStore}>
+            <DarkModeProvider>
             <UserContext.Provider value = {{loggedInUser: userName, setUserName}}>
                 <div className="app">
                     <Header />
@@ -140,6 +142,7 @@ const AppLayout = () => {
                     <Outlet />
                 </div>
             </UserContext.Provider>
+            </DarkModeProvider>
         </Provider>
     );
 };

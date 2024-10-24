@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import UserContext from "../utils/userContext";
 import WhatsOnYourMind from "./WhatsOnYourMind";
+import { DarkModeContext } from "../utils/DarkModeContext";
 
 const Body = () => {
     // local state variable - superpowerful variable
@@ -27,6 +28,7 @@ const Body = () => {
 
     const {loggedInUser, setUserName} = useContext(UserContext);
 
+    const {darkMode} = useContext(DarkModeContext);
     // if no dependency array => useeffect is called on every render
     // if the dependency array is empty => [] => useeffect called on initial render (just once)
     // if dependency array [btnName] => called everytime btnName is updated
@@ -85,12 +87,13 @@ const Body = () => {
     if(onlineStatus === false) return <h1>Looks like you're offline!! Please check your internet connection;</h1>
 
     // console.log("body rendered");
-    console.log(filteredRestaurants);
+    // console.log(filteredRestaurants);
+    console.log(darkMode);
 
     return listOfRestaurants.length === 0 ? ( <Shimmer /> ) :(
         <div 
         // className="body"
-        className="m-10 px-36"
+        className={darkMode ? `m-10 px-36 bg-slate-300` : `m-10 px-36`}
         >
             {/* <div>
                 <h1 className="font-bold text-2xl px-10 py-6">What's on your mind?</h1>
